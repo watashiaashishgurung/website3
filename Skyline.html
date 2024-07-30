@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <link rel="stylesheet" href="style.css">
+        <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Skyline</title>
+        <link rel="stylesheet" href="https://pyscript.net/latest/pyscript.css" />
+        <script defer src="https://pyscript.net/latest/pyscript.js"></script>
+    </head>
+
+    <body style="background: linear-gradient(skyblue, white);
+    background-attachment: fixed;
+    background-position: center;
+    background-size: cover;">
+
+                <div id="box1"><br>
+                    <div id="box2">
+                        <q> The fundamental concept of this game is to out play each other by making the most accurate guess, not too much not to less,
+                            just enough. Nomatter what guess you make you will always win. Live the dream life you always desired. 
+                        </q>
+
+                    <div class="container">
+                    <h1>Player Game</h1>
+                
+                        <form id="player-form">
+                            <label for="player_names">Enter player names (comma-separated):</label>
+                                <input type="text" id="player_names" name="player_names" required>
+                                    <button type="button" onclick="startGame()">Start Game</button>
+                        </form>
+                    <div id="results" class="results"></div>
+                    </div><br>
+                    </div><br>
+                </div>
+                
+            <py-script>
+                import random
+
+                class Player:
+                    def __init__(self, name):
+                        self.name = name
+                        self.rounds_won = 0
+                        self.amount = 0  # Initialize amount to 0
+                        self.guesses = []   # List to store guesses for each round
+                
+                    def make_guess(self, default_amount):
+                        if self.rounds_won == 0:  # Only allow guesses if the player hasn't won a round yet
+                            # Generate a random guess less than the default amount
+                            guess = random.randint(500, default_amount - 1)
+                            self.guesses.append(guess)
+                        else:
+                            # Set the guess to the default amount for the final round for all players
+                            self.guesses.append(default_amount)
+                
+                def play_game(players):
+                    num_players = len(players)
+                    default_amount = 1000
+                    
+                    round_number = 1
+                    while True:
+                        print(f"\nRound {round_number}:")
+                        
+                        # Each player makes a guess if they haven't won a round yet
+                        for player in players:
+                            player.make_guess(default_amount)
+                        
+                        # Determine the winner of the round
+                        eligible_players = [player for player in players if player.rounds_won == 0]
+                        if len(eligible_players) == 1:
+                            winner = eligible_players[0]
+                            winner.rounds_won += 1
+                            pot = default_amount * num_players  # Final round pot is always default_amount * num_players
+                            winner.amount += pot
+                            print(f"Winner of the final round: {winner.name}")
+                            print(f"Pot for this round: {pot}")
+                            break  # End the game if there's only one player left to win a round
+                        
+                        winner = min(eligible_players, key=lambda x: min(x.guesses))
+                        winner.rounds_won += 1
+                        
+                        # Calculate and distribute the pot
+                        pot = min(winner.guesses) * num_players  # Calculate pot based on minimum guess
+                        winner.amount += pot
+                        for player in players:
+                            if player != winner:
+                                player.amount -= default_amount  # Pay the default amount
+                        
+                        print(f"Winner of the round: {winner.name}")
+                        print(f"Pot for this round: {pot}")
+                        
+                        round_number += 1
+                    
+                    # For the final round, set the amount paid to the default amount for all players
+                    for player in players:
+                        if player.rounds_won > 0:  # Only for players who have won a round
+                            player.amount = default_amount * (player.rounds_won - 1)
+                    
+                    # Compute summary stats for each player
+                    print("\nSummary Statistics:")
+                    for player in players:
+                        if player.rounds_won > 0:  # Only for players who have won a round
+                            print(f"\nPlayer: {player.name}")
+                            print("Guesses per round:")
+                            for i, guess in enumerate(player.guesses):
+                                if guess is not None and i < len(player.guesses) - 1:  # Display actual guess if not the final round
+                                    print(f"Round {i + 1}: {guess}")
+                                else:
+                                    print(f"Round {i + 1}: Default amount ({default_amount}) for final round")
+                
+                # Define player names
+                player_names = [
+                    "Alice", "Bob", "Charlie", "David", "Emily",
+                    "Frank", "Grace", "Hannah", "Isaac", "Jasmine"
+                ]
+                
+                # Create players
+                players = [Player(name) for name in player_names]
+                
+                # Play the game
+                play_game(players)
+            </py-script>
+             
+
+    </body>
+<!--  Is my algorithm benificial for the economy?
+The algorithm you provided is a simulation of a game rather than a direct economic model, so its impact on the real economy would be indirect and limited. However, gamification techniques like those used in the algorithm can have some positive effects on economic behavior and decision-making in certain contexts:
+Learning and Skill Development: Games can provide opportunities for players to develop critical thinking, decision-making, and strategic planning skills. This can indirectly benefit the economy by fostering a more skilled and adaptable workforce.
+Behavioral Economics Insights: By studying player behavior and decision-making within the game, researchers can gain insights into economic phenomena such as risk aversion, competitive behavior, and resource allocation. These insights can inform economic research and policymaking.
+Consumer Engagement and Marketing: Games can be used as a platform for engaging consumers, promoting products or services, and building brand loyalty. This can stimulate economic activity by encouraging consumer spending and brand interactions.
+Innovation and Creativity: Games often encourage innovation and creativity through problem-solving challenges and open-ended gameplay. This can drive economic growth by fostering entrepreneurship, new product development, and technological advancement.
+Social Interaction and Networking: Multiplayer games facilitate social interaction and networking among players, which can lead to the formation of communities, collaborations, and partnerships. These social connections can have economic benefits such as knowledge sharing, resource pooling, and collective action.
+Overall, while the algorithm itself may not directly impact the economy, the principles of gamification and behavioral economics it embodies can contribute to economic development, innovation, and social cohesion in various ways. However, the specific impact would depend on the context in which the algorithm is implemented and the goals it seeks to achieve.
+-->
+
+    <div class="button-container">
+        <a href="index.html"><button>Home</button></a><br>
+        <a href="Skyline.html"><button>Skyline</button></a><br>
+
+    </div>
+</html>

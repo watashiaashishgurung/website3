@@ -41,6 +41,18 @@ p{
     border-width: 5px;
     padding: 8px;
     }
+q{
+        background-color: gray;
+        color: limegreen;
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+        font-family: "Press Start 2P";
+        font-size: 1%;
+        border-style: ridge;
+        border-width: 8%;
+        padding: 8px;
+        }
+
 .button-container {
     display: flex;
     font-family: "Press Start 2P";
