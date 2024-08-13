@@ -15,3 +15,11 @@ Thank you for visiting and see you around.
 
 [Portfolio website home](https://watashiaashishgurung.github.io/website3/index.html)
 [skyline](https://watashiaashishgurung.github.io/website3/Skyline.html)
+
+
+For more details and the actual "code" visit [here](https://github.com/watashiaashishgurung/website3/blob/main/Skyline.html)
+Feel free to build you one game. You could implement insurance policies or set a time restriction and so on.
+ATM I am a bit busy with some other very important stuff. DM me if you need me.
+
+Peace and Love!
+
