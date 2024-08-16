@@ -23,3 +23,16 @@ ATM I am a bit busy with some other very important stuff. DM me if you need me.
 
 Peace and Love!
 
+More details
+📝
+I’ve designed an algorithm that aims to promote capitalism in its truest form—a system that thrives on people's talents. Everyone has unique abilities, and everyone should have the opportunity to use those talents to live up to their fullest potential. With this algorithm, regardless of your financial background, gender, or race, you can leverage your talent and the monetary system to achieve your goals.
+
+First and foremost, the algorithm provides insurance and safety. It requires the “approval” of a group before investments are made, democratizing decision-making and raising awareness of potential consequences. This approach helps prevent rash decisions or excessive opportunism, encouraging a more thoughtful and responsible attitude toward investment.
+
+Additionally, underprivileged people no longer need to fear those with “higher” social status or bureaucratic obstacles, as these can be more easily exposed and challenged within this system. When more money is involved, people are likely to act more cautiously and thoughtfully. Moreover, banks will benefit as well, as they can leverage increased transaction fees from the more frequent and diverse financial activities that this system encourages.
+
+All you need to do is pursue your dreams with consistency. Surround yourself with like-minded people who believe in you. With your talent and a supportive team, you can accomplish anything in life. I understand how competitive the landscape can be within this individualistic, competition-driven capitalist monetary system. However, this algorithm makes the competition fairer, especially for those who are underprivileged.
+
+Who wouldn’t want a world where everyone has the chance to reach their fullest potential? This is truly a story like the parable of talents.
+
+Please let me know your thoughts—I’d love to collaborate and refine this system together.
