@@ -1,3 +1,69 @@
+# Skyline: A Game-Based Economic Equalizer
+
+## Overview
+
+**Skyline** is a strategic game simulation aimed at addressing economic disparity by modeling a system in which individual talent and collective effort are key to success. Players engage in a competitive environment where calculated decision-making and fair distribution of resources determine the winners.
+
+The game's algorithm serves as an "equalizer" where every player has a chance to win by making strategic guesses. It provides insights into how individual actions impact collective outcomes, making it a model for exploring economic behavior and systems.
+
+## Purpose
+
+Skyline is not just a game—it demonstrates principles that can be applied to understanding economic systems, particularly in how resources are allocated and how individuals and groups make decisions. The game aims to show that with the right balance of effort and talent, everyone can succeed, echoing the importance of fairness and equity in economic systems.
+
+## Game Mechanics
+
+- **Player Guessing System**: Players make guesses on an amount between a given range.
+- **Winning Rounds**: Each round has one winner, determined by who makes the most accurate guess relative to the predetermined default amount.
+- **Game Balance**: Each player can only win a single round, ensuring fair distribution of wins across participants.
+- **Pot Distribution**: The resources are distributed based on the collective guesses and contributions of all players.
+- **End Condition**: The game ends when all players have won one round.
+
+## Features
+
+- **Fair Chance for All**: Every player is guaranteed the opportunity to win at least one round.
+- **Equalizer Concept**: Balances individual talent and collective effort, aligning with principles of equity.
+- **Strategic Guessing**: Players must balance risk and reward by making calculated guesses.
+- **Simulation of Economic Principles**: The algorithm reflects ideas of resource allocation and decision-making seen in real-world economic systems.
+
+## Instructions to Run
+
+1. Download or clone the repository.
+2. Ensure you have an active internet connection for external dependencies (like PyScript).
+3. Open `index.html` in a web browser.
+4. Enter the names of the players (comma-separated) and click "Start Game" to begin.
+5. Follow the prompts to see the game progress and results.
+
+## Technology Stack
+
+- **HTML5**: For the structure and layout of the game interface.
+- **CSS**: For styling the game's appearance.
+- **PyScript**: For running Python logic directly in the browser to handle game logic and algorithm.
+- **JavaScript**: For form validation and interactive elements.
+
+## Game Algorithm
+
+The core of Skyline revolves around an algorithm that distributes a pot of resources (default amount) based on players' guesses. Players must guess an amount each round, with the lowest guess determining the round winner. The game simulates competition while ensuring that all players eventually win a round, balancing individual success with collective fairness.
+
+### Player Classes
+
+- **Player Class**: Represents individual players, tracking their name, rounds won, total amount won, and their guesses across rounds.
+- **Game Logic**: Simulates rounds, calculates the winner, and distributes the pot accordingly.
+
+## Future Improvements
+
+- **Interactive Guessing**: Allow players to enter guesses rather than relying on randomness.
+- **Improved User Interface**: Show round progress, player scores, and results on the web page.
+- **Strategic Depth**: Implement more complex decision-making to increase the strategic aspect of the game.
+
+## Contributing
+
+Feel free to contribute by submitting issues or pull requests to enhance the game logic, user experience, or add new features.
+
+## License
+
+This project is licensed under the MIT License.
+
+
 Hi there! Welcome to my portfolio website.
 
 Feel free to explore, and if something catches your interest, I'd love to hear your thoughts. My favorite project is the Skyline game, which you can check out here: Skyline Game. I've always wanted to bring this game to life through coding, and I'm thrilled that I finally made it happen.
@@ -36,3 +102,6 @@ All you need to do is pursue your dreams with consistency. Surround yourself wit
 Who wouldn’t want a world where everyone has the chance to reach their fullest potential? This is truly a story like the parable of talents.
 
 Please let me know your thoughts—I’d love to collaborate and refine this system together.
+
+
+
