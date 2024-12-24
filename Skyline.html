@@ -19,32 +19,29 @@
     </div>
 </div>
 
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <link rel="stylesheet" href="style.css">
+        <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Skyline</title>
+    </head>
 
-</body>   
-<!--  Is my algorithm benificial for the economy?
-The algorithm you provided is a simulation of a game rather than a direct economic model, so its impact on the real economy would be indirect and limited. However, gamification techniques like those used in the algorithm can have some positive effects on economic behavior and decision-making in certain contexts:
-Learning and Skill Development: Games can provide opportunities for players to develop critical thinking, decision-making, and strategic planning skills. This can indirectly benefit the economy by fostering a more skilled and adaptable workforce.
-Behavioral Economics Insights: By studying player behavior and decision-making within the game, researchers can gain insights into economic phenomena such as risk aversion, competitive behavior, and resource allocation. These insights can inform economic research and policymaking.
-Consumer Engagement and Marketing: Games can be used as a platform for engaging consumers, promoting products or services, and building brand loyalty. This can stimulate economic activity by encouraging consumer spending and brand interactions.
-Innovation and Creativity: Games often encourage innovation and creativity through problem-solving challenges and open-ended gameplay. This can drive economic growth by fostering entrepreneurship, new product development, and technological advancement.
-Social Interaction and Networking: Multiplayer games facilitate social interaction and networking among players, which can lead to the formation of communities, collaborations, and partnerships. These social connections can have economic benefits such as knowledge sharing, resource pooling, and collective action.
-Overall, while the algorithm itself may not directly impact the economy, the principles of gamification and behavioral economics it embodies can contribute to economic development, innovation, and social cohesion in various ways. However, the specific impact would depend on the context in which the algorithm is implemented and the goals it seeks to achieve.
--->
-
-    <div class="button-container">
-        <a href="index.html"><button>Home</button></a><br>
-        <a href="Skyline.html"><button>Skyline</button></a><br>
-
-    </div>
+    <body style="background: linear-gradient(skyblue, white);
+    background-attachment: fixed;
+    background-position: center;
+    background-size: cover;">
     <h1>Hello, World!</h1>
-    <p>Welcome to the Skyline Project</p>
-    <button onclick="toggleInstructions()">Show Instructions</button>
+    <p>Welcome to the skyline</p>
+       <button onclick="toggleInstructions()">Show Instructions</button>
     <div id="instructions" style="display:none;">
         <p>Welcome to the guessing game! Here are the instructions:</p>
         <ul>
             <li>Enter the number of players and click "Next".</li>
             <li>Enter the names of the players and click "Start Game".</li>
-            <li>Each player will make a guess in each round.</li>
+            <li>Each player makes a guess in each round until they win a round, then their guess is defaulted to the winner's guess.</li>
             <li>The player with the lowest unique guess wins the round.</li>
             <li>The game continues until only one player remains eligible.</li>
             <li>The winner is the player with the highest amount at the end.</li>
@@ -62,7 +59,24 @@ Overall, while the algorithm itself may not directly impact the economy, the pri
         }
     </script>
 
-    <button onclick="playGame()">Start Game</button>
+    <div id="player-setup">
+        <label for="numPlayers">Number of Players:</label>
+        <input type="number" id="numPlayers" min="1" max="20">
+        <button onclick="setupPlayers()">Next</button>
+    </div>
+
+    <div id="player-names" style="display:none;">
+        <form id="playerForm"></form>
+        <button onclick="startGame()">Start Game</button>
+    </div>
+
+    <div id="game" style="display:none;">
+        <div id="round-info"></div>
+        <div id="guesses"></div>
+        <button onclick="playRound()">Play Round</button>
+    </div>
+
+    <pre id="output"></pre>
 
     <script>
         class Player {
@@ -73,155 +87,126 @@ Overall, while the algorithm itself may not directly impact the economy, the pri
                 this.guesses = [];
             }
 
-            makeGuess(defaultAmount) {
-                if (this.roundsWon === 0) {
-                    // Generate a random guess between 500 and defaultAmount - 1
-                    const guess = Math.floor(Math.random() * (defaultAmount - 500)) + 500;
-                    this.guesses.push(guess);
-                } else {
-                    // Append the default amount if the player has already won a round
-                    this.guesses.push(defaultAmount);
-                }
+            makeGuess(guess) {
+                this.guesses.push(guess);
             }
         }
 
-        function playGame(playerNames) {
-            const players = playerNames.map(name => new Player(name));
-            const numPlayers = players.length;
-            const defaultAmount = 1000;
-            let roundNumber = 1;
+        let players = [];
+        let roundNumber = 1;
+        const MAX_AMOUNT = 10000; // Set the maximum amount here
 
-            while (true) {
-                console.log(`\nRound ${roundNumber}:`);
+        function setupPlayers() {
+            const numPlayers = document.getElementById('numPlayers').value;
+            const playerForm = document.getElementById('playerForm');
+            playerForm.innerHTML = '';
 
-                // Each player makes a guess
-                players.forEach(player => player.makeGuess(defaultAmount));
-
-                // Filter players who have not won a round yet
-                const eligiblePlayers = players.filter(player => player.roundsWon === 0);
-
-                // If only one eligible player remains, they win the final round
-                if (eligiblePlayers.length === 1) {
-                    const winner = eligiblePlayers[0];
-                    winner.roundsWon += 1;
-                    const pot = defaultAmount * numPlayers;
-                    winner.amount += pot;
-                    console.log(`Winner of the final round: ${winner.name}`);
-                    break;
-                }
-
-                // Determine the round winner
-                let winner;
-                try {
-                    winner = eligiblePlayers.reduce((minPlayer, currentPlayer) => {
-                        const minGuess = Math.min(...currentPlayer.guesses);
-                        const minGuessOther = Math.min(...minPlayer.guesses);
-                        return minGuess < minGuessOther ? currentPlayer : minPlayer;
-                    });
-                } catch (error) {
-                    console.error("Error determining winner. Check player guesses.");
-                    break;
-                }
-
-                winner.roundsWon += 1;
-                const pot = Math.min(...winner.guesses) * numPlayers;
-                winner.amount += pot;
-
-                // Deduct the default amount from non-winning players
-                players.forEach(player => {
-                    if (player !== winner) {
-                        player.amount = Math.max(player.amount - defaultAmount, 0);
-                    }
-                });
-
-                console.log(`Winner of the round: ${winner.name}`);
-                console.log(`Pot for this round: ${pot}`);
-                roundNumber++;
+            for (let i = 0; i < numPlayers; i++) {
+                playerForm.innerHTML += `<label for="player${i}">Player ${i + 1} Name:</label>
+                                         <input type="text" id="player${i}" required><br>`;
             }
 
-            // Print summary statistics
-            console.log("\nSummary Statistics:");
-            players.forEach(player => {
-                console.log(`Player: ${player.name}, Rounds Won: ${player.roundsWon}, Total Amount: ${player.amount}`);
-                console.log("Guesses:", player.guesses);
+            document.getElementById('player-setup').style.display = 'none';
+            document.getElementById('player-names').style.display = 'block';
+        }
+
+        function startGame() {
+            const playerForm = document.getElementById('playerForm');
+            const inputs = playerForm.getElementsByTagName('input');
+
+            for (let input of inputs) {
+                players.push(new Player(input.value));
+            }
+
+            document.getElementById('player-names').style.display = 'none';
+            document.getElementById('game').style.display = 'block';
+            setupRound();
+        }
+
+        function setupRound() {
+            const roundInfo = document.getElementById('round-info');
+            const guessesDiv = document.getElementById('guesses');
+            roundInfo.innerHTML = `Round ${roundNumber}`;
+            guessesDiv.innerHTML = '';
+
+            players.forEach((player, index) => {
+                guessesDiv.innerHTML += `<label for="guess${index}">${player.name}'s Guess:</label>
+                                         <input type="number" id="guess${index}" required><br>`;
             });
         }
 
-        // Example usage
-        const playerNames = ["Alice", "Bob", "Charlie", "David", "Emily", "Frank", "Grace", "Hannah", "Isaac", "Jasmine"];
-        playGame(playerNames);
-    </script>
+        function playRound() {
+            const guessesDiv = document.getElementById('guesses');
+            const inputs = guessesDiv.getElementsByTagName('input');
 
+            for (let i = 0; i < inputs.length; i++) {
+                players[i].makeGuess(parseInt(inputs[i].value));
+            }
+
+            const eligiblePlayers = players.filter(player => player.roundsWon === 0);
+
+            if (eligiblePlayers.length === 1) {
+                const winner = eligiblePlayers[0];
+                winner.roundsWon += 1;
+                const pot = 1000 * players.length;
+                winner.amount += pot;
+                winner.amount = Math.min(winner.amount, MAX_AMOUNT); // Set amount to fixed maximum
+                document.getElementById('output').textContent += `Winner of the final round: ${winner.name}\n`;
+                endGame();
+                return;
+            }
+
+            let winner;
+            try {
+                winner = eligiblePlayers.reduce((minPlayer, currentPlayer) => {
+                    const minGuess = Math.min(...currentPlayer.guesses);
+                    const minGuessOther = Math.min(...minPlayer.guesses);
+                    return minGuess < minGuessOther ? currentPlayer : minPlayer;
+                });
+            } catch (error) {
+                document.getElementById('output').textContent += "Error determining winner. Check player guesses.\n";
+                endGame();
+                return;
+            }
+
+            winner.roundsWon += 1;
+            const pot = Math.min(...winner.guesses) * players.length;
+            winner.amount += pot;
+            winner.amount = Math.min(winner.amount, MAX_AMOUNT); // Set amount to fixed maximum
+
+            players.forEach(player => {
+                if (player !== winner) {
+                    player.amount = Math.max(player.amount - 1000, 0);
+                } else {
+                    player.amount -= Math.max(...player.guesses) * (players.length - 1);
+                }
+            });
+
+            // Set the winner's input guess to the maximum value
+            const winnerIndex = players.indexOf(winner);
+            document.getElementById(`guess${winnerIndex}`).value = MAX_AMOUNT;
+
+            document.getElementById('output').textContent += `Winner of the round: ${winner.name}\n`;
+            document.getElementById('output').textContent += `Pot for this round: ${pot}\n`;
+
+            roundNumber++;
+            setupRound();
+        }
+
+        function endGame() {
+            document.getElementById('game').style.display = 'none';
+            document.getElementById('output').textContent += "\nSummary Statistics:\n";
+            players.forEach(player => {
+                document.getElementById('output').textContent += `Player: ${player.name}, Rounds Won: ${player.roundsWon}, Total Amount: ${player.amount}\n`;
+                document.getElementById('output').textContent += `Guesses: ${player.guesses.join(', ')}\n`;
+            });
+        }
+    </script>
+</body>
     <pre id="output"></pre>
 
-    <script>
-        function playGame() {
-            const playerNames = ["Alice", "Bob", "Charlie", "David", "Emily", "Frank", "Grace", "Hannah", "Isaac", "Jasmine"];
-            const players = playerNames.map(name => new Player(name));
-            const numPlayers = players.length;
-            const defaultAmount = 1000;
-            let roundNumber = 1;
-            let output = '';
-
-            while (true) {
-                output += `\nRound ${roundNumber}:\n`;
-
-                // Each player makes a guess
-                players.forEach(player => player.makeGuess(defaultAmount));
-
-                // Filter players who have not won a round yet
-                const eligiblePlayers = players.filter(player => player.roundsWon === 0);
-
-                // If only one eligible player remains, they win the final round
-                if (eligiblePlayers.length === 1) {
-                    const winner = eligiblePlayers[0];
-                    winner.roundsWon += 1;
-                    const pot = defaultAmount * numPlayers;
-                    winner.amount += pot;
-                    output += `Winner of the final round: ${winner.name}\n`;
-                    break;
-                }
-
-                // Determine the round winner
-                let winner;
-                try {
-                    winner = eligiblePlayers.reduce((minPlayer, currentPlayer) => {
-                        const minGuess = Math.min(...currentPlayer.guesses);
-                        const minGuessOther = Math.min(...minPlayer.guesses);
-                        return minGuess < minGuessOther ? currentPlayer : minPlayer;
-                    });
-                } catch (error) {
-                    output += "Error determining winner. Check player guesses.\n";
-                    break;
-                }
-
-                winner.roundsWon += 1;
-                const pot = Math.min(...winner.guesses) * numPlayers;
-                winner.amount += pot;
-
-                // Deduct the default amount from non-winning players
-                players.forEach(player => {
-                    if (player !== winner) {
-                        player.amount = Math.max(player.amount - defaultAmount, 0);
-                    }
-                });
-
-                output += `Winner of the round: ${winner.name}\n`;
-                output += `Pot for this round: ${pot}\n`;
-                roundNumber++;
-            }
-
-            // Print summary statistics
-            output += "\nSummary Statistics:\n";
-            players.forEach(player => {
-                output += `Player: ${player.name}, Rounds Won: ${player.roundsWon}, Total Amount: ${player.amount}\n`;
-                output += `Guesses: ${player.guesses.join(', ')}\n`;
-            });
-
-            document.getElementById('output').textContent = output;
-        }
-    </script>
-
-
+</html>
+</body>
+    <pre id="output"></pre>
 
 </html>
