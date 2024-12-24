@@ -18,6 +18,8 @@
         <iframe src="https://nbviewer.jupyter.org/github/watashiaashishgurung/SkylineAdvanced/blob/main/SkylineProject.ipynb" width="800" height="600"></iframe>
     </div>
 </div>
+
+
 </body>   
 <!--  Is my algorithm benificial for the economy?
 The algorithm you provided is a simulation of a game rather than a direct economic model, so its impact on the real economy would be indirect and limited. However, gamification techniques like those used in the algorithm can have some positive effects on economic behavior and decision-making in certain contexts:
@@ -34,4 +36,192 @@ Overall, while the algorithm itself may not directly impact the economy, the pri
         <a href="Skyline.html"><button>Skyline</button></a><br>
 
     </div>
+    <h1>Hello, World!</h1>
+    <p>Welcome to the Skyline Project</p>
+    <button onclick="toggleInstructions()">Show Instructions</button>
+    <div id="instructions" style="display:none;">
+        <p>Welcome to the guessing game! Here are the instructions:</p>
+        <ul>
+            <li>Enter the number of players and click "Next".</li>
+            <li>Enter the names of the players and click "Start Game".</li>
+            <li>Each player will make a guess in each round.</li>
+            <li>The player with the lowest unique guess wins the round.</li>
+            <li>The game continues until only one player remains eligible.</li>
+            <li>The winner is the player with the highest amount at the end.</li>
+        </ul>
+    </div>
+
+    <script>
+        function toggleInstructions() {
+            const instructions = document.getElementById('instructions');
+            if (instructions.style.display === 'none') {
+                instructions.style.display = 'block';
+            } else {
+                instructions.style.display = 'none';
+            }
+        }
+    </script>
+
+    <button onclick="playGame()">Start Game</button>
+
+    <script>
+        class Player {
+            constructor(name) {
+                this.name = name;
+                this.roundsWon = 0;
+                this.amount = 0;
+                this.guesses = [];
+            }
+
+            makeGuess(defaultAmount) {
+                if (this.roundsWon === 0) {
+                    // Generate a random guess between 500 and defaultAmount - 1
+                    const guess = Math.floor(Math.random() * (defaultAmount - 500)) + 500;
+                    this.guesses.push(guess);
+                } else {
+                    // Append the default amount if the player has already won a round
+                    this.guesses.push(defaultAmount);
+                }
+            }
+        }
+
+        function playGame(playerNames) {
+            const players = playerNames.map(name => new Player(name));
+            const numPlayers = players.length;
+            const defaultAmount = 1000;
+            let roundNumber = 1;
+
+            while (true) {
+                console.log(`\nRound ${roundNumber}:`);
+
+                // Each player makes a guess
+                players.forEach(player => player.makeGuess(defaultAmount));
+
+                // Filter players who have not won a round yet
+                const eligiblePlayers = players.filter(player => player.roundsWon === 0);
+
+                // If only one eligible player remains, they win the final round
+                if (eligiblePlayers.length === 1) {
+                    const winner = eligiblePlayers[0];
+                    winner.roundsWon += 1;
+                    const pot = defaultAmount * numPlayers;
+                    winner.amount += pot;
+                    console.log(`Winner of the final round: ${winner.name}`);
+                    break;
+                }
+
+                // Determine the round winner
+                let winner;
+                try {
+                    winner = eligiblePlayers.reduce((minPlayer, currentPlayer) => {
+                        const minGuess = Math.min(...currentPlayer.guesses);
+                        const minGuessOther = Math.min(...minPlayer.guesses);
+                        return minGuess < minGuessOther ? currentPlayer : minPlayer;
+                    });
+                } catch (error) {
+                    console.error("Error determining winner. Check player guesses.");
+                    break;
+                }
+
+                winner.roundsWon += 1;
+                const pot = Math.min(...winner.guesses) * numPlayers;
+                winner.amount += pot;
+
+                // Deduct the default amount from non-winning players
+                players.forEach(player => {
+                    if (player !== winner) {
+                        player.amount = Math.max(player.amount - defaultAmount, 0);
+                    }
+                });
+
+                console.log(`Winner of the round: ${winner.name}`);
+                console.log(`Pot for this round: ${pot}`);
+                roundNumber++;
+            }
+
+            // Print summary statistics
+            console.log("\nSummary Statistics:");
+            players.forEach(player => {
+                console.log(`Player: ${player.name}, Rounds Won: ${player.roundsWon}, Total Amount: ${player.amount}`);
+                console.log("Guesses:", player.guesses);
+            });
+        }
+
+        // Example usage
+        const playerNames = ["Alice", "Bob", "Charlie", "David", "Emily", "Frank", "Grace", "Hannah", "Isaac", "Jasmine"];
+        playGame(playerNames);
+    </script>
+
+    <pre id="output"></pre>
+
+    <script>
+        function playGame() {
+            const playerNames = ["Alice", "Bob", "Charlie", "David", "Emily", "Frank", "Grace", "Hannah", "Isaac", "Jasmine"];
+            const players = playerNames.map(name => new Player(name));
+            const numPlayers = players.length;
+            const defaultAmount = 1000;
+            let roundNumber = 1;
+            let output = '';
+
+            while (true) {
+                output += `\nRound ${roundNumber}:\n`;
+
+                // Each player makes a guess
+                players.forEach(player => player.makeGuess(defaultAmount));
+
+                // Filter players who have not won a round yet
+                const eligiblePlayers = players.filter(player => player.roundsWon === 0);
+
+                // If only one eligible player remains, they win the final round
+                if (eligiblePlayers.length === 1) {
+                    const winner = eligiblePlayers[0];
+                    winner.roundsWon += 1;
+                    const pot = defaultAmount * numPlayers;
+                    winner.amount += pot;
+                    output += `Winner of the final round: ${winner.name}\n`;
+                    break;
+                }
+
+                // Determine the round winner
+                let winner;
+                try {
+                    winner = eligiblePlayers.reduce((minPlayer, currentPlayer) => {
+                        const minGuess = Math.min(...currentPlayer.guesses);
+                        const minGuessOther = Math.min(...minPlayer.guesses);
+                        return minGuess < minGuessOther ? currentPlayer : minPlayer;
+                    });
+                } catch (error) {
+                    output += "Error determining winner. Check player guesses.\n";
+                    break;
+                }
+
+                winner.roundsWon += 1;
+                const pot = Math.min(...winner.guesses) * numPlayers;
+                winner.amount += pot;
+
+                // Deduct the default amount from non-winning players
+                players.forEach(player => {
+                    if (player !== winner) {
+                        player.amount = Math.max(player.amount - defaultAmount, 0);
+                    }
+                });
+
+                output += `Winner of the round: ${winner.name}\n`;
+                output += `Pot for this round: ${pot}\n`;
+                roundNumber++;
+            }
+
+            // Print summary statistics
+            output += "\nSummary Statistics:\n";
+            players.forEach(player => {
+                output += `Player: ${player.name}, Rounds Won: ${player.roundsWon}, Total Amount: ${player.amount}\n`;
+                output += `Guesses: ${player.guesses.join(', ')}\n`;
+            });
+
+            document.getElementById('output').textContent = output;
+        }
+    </script>
+
+
+
 </html>
