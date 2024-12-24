@@ -35,6 +35,36 @@
     background-size: cover;">
     <h1>Hello, World!</h1>
     <p>Welcome to the skyline</p>
+    
+    <button onclick="toggleUpdate()">Latest Update</button>
+    <div id="latest-update" style="display:none;">
+        <p>🌟 Skyline Project Update: It's Game Time! 🌟</p>
+        <p>Hello everyone,</p>
+        <p>I’m thrilled to share an exciting update on my Skyline Project! 🚀 This project, designed to help players develop resourcefulness, strategic thinking, and collaboration skills, has taken a big step forward. Here's what’s new:</p>
+        <p>🖥️ A Neat Jupyter Notebook<br>
+        The latest addition to Skyline is a well-structured Jupyter Notebook that dives deep into the mechanics of the game. Whether you're curious about the algorithm driving the experience or the data behind the scenes, this notebook provides clear, organized insights into how the Skyline game works. It's a perfect resource for those who love exploring the "how" behind the "wow."</p>
+        <p>🎮 Game Simulation<br>
+        I’m also excited to introduce a game simulation that brings Skyline to life! The simulation demonstrates how players navigate challenges, allocate resources, and strategize to achieve their goals. This interactive experience offers a glimpse of Skyline’s vision to foster creativity, critical thinking, and teamwork—all while having fun.</p>
+        <p>🎉 Skyline Game, Gaaaame Start! 🎉<br>
+        It’s not just a game—it’s a journey of learning and empowerment. With this update, we’re one step closer to turning this vision into reality.</p>
+        <p>I can’t wait for you to try it out and share your thoughts. Let’s build a community of dreamers, doers, and game-changers together.</p>
+        <p>Stay tuned for more updates and remember:<br>
+        🌟 Skyline Game, Gaaaame Start! 🌟</p>
+        <p>Best regards,<br>
+        Aash</p>
+    </div>
+
+    <script>
+        function toggleUpdate() {
+            const update = document.getElementById('latest-update');
+            if (update.style.display === 'none') {
+                update.style.display = 'block';
+            } else {
+                update.style.display = 'none';
+            }
+        }
+    </script>
+
        <button onclick="toggleInstructions()">Show Instructions</button>
     <div id="instructions" style="display:none;">
         <p>Welcome to the guessing game! Here are the instructions:</p>
@@ -202,11 +232,10 @@
             });
         }
     </script>
+      <div class="button-container">
+        <a href="index.html"><button>Home</button></a><br>
+        <a href="Skyline.html"><button>Skyline</button></a><br>
+      </div>
 </body>
     <pre id="output"></pre>
-
-</html>
-</body>
-    <pre id="output"></pre>
-
 </html>
