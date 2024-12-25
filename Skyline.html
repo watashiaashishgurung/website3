@@ -75,6 +75,10 @@
             <li>The player with the lowest unique guess wins the round.</li>
             <li>The game continues until only one player remains eligible.</li>
             <li>The winner is the player with the highest amount at the end.</li>
+            <li>This is a multiplayer game, played individually and collectivly</li>
+            <li>Good luck and have fun!</li>
+            <li>Click "Play Round" to start the game.</li>
+            <li>If you want an expanded version with Graph and Data analysis, <a href="index.html">contact me</a></li>
         </ul>
     </div>
 
@@ -116,119 +120,112 @@
                 this.amount = 0;
                 this.guesses = [];
             }
-
+    
             makeGuess(guess) {
                 this.guesses.push(guess);
             }
         }
-
+    
         let players = [];
         let roundNumber = 1;
-        const MAX_AMOUNT = 10000; // Set the maximum amount here
-
+        const MAX_AMOUNT = 10000;
+    
         function setupPlayers() {
             const numPlayers = document.getElementById('numPlayers').value;
             const playerForm = document.getElementById('playerForm');
             playerForm.innerHTML = '';
-
+    
             for (let i = 0; i < numPlayers; i++) {
                 playerForm.innerHTML += `<label for="player${i}">Player ${i + 1} Name:</label>
                                          <input type="text" id="player${i}" required><br>`;
             }
-
+    
             document.getElementById('player-setup').style.display = 'none';
             document.getElementById('player-names').style.display = 'block';
         }
-
+    
         function startGame() {
             const playerForm = document.getElementById('playerForm');
             const inputs = playerForm.getElementsByTagName('input');
-
+    
             for (let input of inputs) {
                 players.push(new Player(input.value));
             }
-
+    
             document.getElementById('player-names').style.display = 'none';
             document.getElementById('game').style.display = 'block';
             setupRound();
         }
-
+    
         function setupRound() {
             const roundInfo = document.getElementById('round-info');
             const guessesDiv = document.getElementById('guesses');
             roundInfo.innerHTML = `Round ${roundNumber}`;
             guessesDiv.innerHTML = '';
-
+    
             players.forEach((player, index) => {
                 guessesDiv.innerHTML += `<label for="guess${index}">${player.name}'s Guess:</label>
                                          <input type="number" id="guess${index}" required><br>`;
             });
         }
-
+    
         function playRound() {
             const guessesDiv = document.getElementById('guesses');
             const inputs = guessesDiv.getElementsByTagName('input');
-
+    
             for (let i = 0; i < inputs.length; i++) {
                 players[i].makeGuess(parseInt(inputs[i].value));
             }
-
+    
             const eligiblePlayers = players.filter(player => player.roundsWon === 0);
-
+    
             if (eligiblePlayers.length === 1) {
                 const winner = eligiblePlayers[0];
                 winner.roundsWon += 1;
-                const pot = 1000 * players.length;
-                winner.amount += pot;
-                winner.amount = Math.min(winner.amount, MAX_AMOUNT); // Set amount to fixed maximum
-                document.getElementById('output').textContent += `Winner of the final round: ${winner.name}\n`;
-                endGame();
+                winner.amount += 1000 * players.length;
+                endGame(winner);
                 return;
             }
-
-            let winner;
-            try {
-                winner = eligiblePlayers.reduce((minPlayer, currentPlayer) => {
-                    const minGuess = Math.min(...currentPlayer.guesses);
-                    const minGuessOther = Math.min(...minPlayer.guesses);
-                    return minGuess < minGuessOther ? currentPlayer : minPlayer;
-                });
-            } catch (error) {
-                document.getElementById('output').textContent += "Error determining winner. Check player guesses.\n";
-                endGame();
+    
+            const guesses = eligiblePlayers.map(player => Math.min(...player.guesses));
+            const uniqueGuesses = guesses.filter(guess => guesses.indexOf(guess) === guesses.lastIndexOf(guess));
+    
+            if (uniqueGuesses.length === 0) {
+                document.getElementById('output').textContent += `No unique guesses this round. Try again.\n`;
                 return;
             }
-
+    
+            const lowestUniqueGuess = Math.min(...uniqueGuesses);
+            const winner = eligiblePlayers.find(player => Math.min(...player.guesses) === lowestUniqueGuess);
+    
             winner.roundsWon += 1;
-            const pot = Math.min(...winner.guesses) * players.length;
-            winner.amount += pot;
-            winner.amount = Math.min(winner.amount, MAX_AMOUNT); // Set amount to fixed maximum
-
-            players.forEach(player => {
-                if (player !== winner) {
-                    player.amount = Math.max(player.amount - 1000, 0);
-                } else {
-                    player.amount -= Math.max(...player.guesses) * (players.length - 1);
-                }
-            });
-
-            // Set the winner's input guess to the maximum value
-            const winnerIndex = players.indexOf(winner);
-            document.getElementById(`guess${winnerIndex}`).value = MAX_AMOUNT;
-
-            document.getElementById('output').textContent += `Winner of the round: ${winner.name}\n`;
-            document.getElementById('output').textContent += `Pot for this round: ${pot}\n`;
-
+    
+            // Calculate winnings based on the total initial players
+            const totalInitialPlayers = players.length;
+            const winningAmount = lowestUniqueGuess * totalInitialPlayers;
+            winner.amount += winningAmount;
+            winner.amount = Math.min(winner.amount, MAX_AMOUNT);
+    
+            document.getElementById('output').textContent += `Winner of round ${roundNumber}: ${winner.name} (Won: ${winningAmount})\n`;
             roundNumber++;
             setupRound();
         }
-
-        function endGame() {
+    
+        function endGame(finalRoundWinner) {
             document.getElementById('game').style.display = 'none';
             document.getElementById('output').textContent += "\nSummary Statistics:\n";
-            players.forEach(player => {
-                document.getElementById('output').textContent += `Player: ${player.name}, Rounds Won: ${player.roundsWon}, Total Amount: ${player.amount}\n`;
-                document.getElementById('output').textContent += `Guesses: ${player.guesses.join(', ')}\n`;
+    
+            // Sort players by rounds won, then by name
+            const sortedPlayers = players.sort((a, b) => b.roundsWon - a.roundsWon || a.name.localeCompare(b.name));
+    
+            // Final round winner details
+            document.getElementById('output').textContent += `Final Round Winner: ${finalRoundWinner.name} (Winning Amount: ${finalRoundWinner.amount})\n`;
+    
+            // Output all players' statistics
+            sortedPlayers.forEach(player => {
+                if (player.roundsWon > 0) {
+                    document.getElementById('output').textContent += `${player.name} - Rounds Won: ${player.roundsWon}, Total Amount: ${player.amount}\n`;
+                }
             });
         }
     </script>
