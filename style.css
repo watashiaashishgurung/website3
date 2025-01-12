@@ -156,6 +156,56 @@ table, th, td {
     from{margin-left: 100%;}
     to{margin-top: 0%;}
 }
+#box4{border: 1px;
+    background-repeat: no-repeat;
+    height: flex;
+    width: flex;
+
+    background-color: gray;
+    border: ridge;
+    padding: 8px;
+    border-color: lightgrey;
+    border-width: 4px;
+    overflow: auto;
+    
+
+    position:relative;
+    top: auto;
+    left: auto;
+
+    animation: mySlide;
+    animation-play-state: running;
+    animation-iteration-count: 1;
+    animation-delay: 10s;
+    animation-timing-function: ease-in-out;
+    animation-duration: 4s;
+}
+#box5{border: 1px;
+    background-repeat: no-repeat;
+    height: 1080px;
+    width: flex;
+
+    background-color: gray;
+    border: ridge;
+    padding: 8px;
+    border-color: lightgrey;
+    border-width: 4px;
+    overflow: auto;
+    
+
+    position:relative;
+    top: auto;
+    left: auto;
+
+    animation: mySlide;
+    animation-play-state: running;
+    animation-iteration-count: 1;
+    animation-delay: 10s;
+    animation-timing-function: ease-in-out;
+    animation-duration: 4s;
+}
+
+
 
 .video-container {
     width: 80%;
